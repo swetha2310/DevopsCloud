@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    tools { 
+        maven 'maven' 
+        jdk 'JAVA_HOME' 
+        }
     environment {
         def BRANCH_NAME ='GIT_BRANCH'
     }
