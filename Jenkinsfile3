@@ -11,13 +11,13 @@ pipeline {
       stage('GIT checkout') {
            steps {
                script{
-                   if (env.GIT_BRANCH.contains('master')) {
+                    if (env.GIT_BRANCH.contains('master')) {
                 echo 'Hello from master branch'
-                git branch: 'master', url: 'https://github.com/swetha2310/hello-world.git'
+                git branch: 'master', url: 'https://github.com/swetha2310/DevopsCloud.git'
                 }
-               else {
+                    else {
                 echo "Run this stage only if the branch is not master"
-                git branch: 'dev', url: 'https://github.com/swetha2310/hello-world.git' 
+                git branch: 'dev', url: 'https://github.com/swetha2310/DevopsCloud.git' 
                }
                }
           }
