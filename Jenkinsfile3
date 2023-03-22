@@ -31,8 +31,7 @@ pipeline {
            steps{
                 script{
                     if (env.GIT_BRANCH.contains('master')) {
-               def mavenPom = readMavenPom file: 'pom.xml'
-                        nexusArtifactUploader artifacts: [[artifactId: "${mavenPom.artifactId}", classifier: '', file: '/var/lib/jenkins/workspace/Ansible-Demo/webapp/target/webapp.war', type: 'war']], credentialsId: 'Nexus', groupId: "${mavenPom.groupId}", nexusUrl: '65.2.186.137:8081/', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-releases', version: "${mavenPom.version}"
+                        nexusArtifactUploader artifacts: [[artifactId: 'maven-project', classifier: '', file: '/var/lib/jenkins/workspace/Ansible-Demo/webapp/target/webapp.war', type: 'war']], credentialsId: 'Nexus', groupId: 'com.example.maven-project', nexusUrl: '65.2.186.137:8081/', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-releases', version: '1.0.0-RELEASE'
                      }
                      else
                      {
