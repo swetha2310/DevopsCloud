@@ -1,0 +1,70 @@
+pipeline {
+    agent any
+    tools { 
+        maven 'maven' 
+        jdk 'JAVA_HOME' 
+        }
+    environment {
+        def BRANCH_NAME ='GIT_BRANCH'
+    }
+    stages {
+      stage('GIT checkout') {
+           steps {
+               script{
+                    if (env.GIT_BRANCH.contains('master')) {
+                echo 'Hello from master branch'
+                git branch: 'master', url: 'https://github.com/swetha2310/DevopsCloud.git'
+                }
+                    else {
+                echo "Run this stage only if the branch is not master"
+                git branch: 'dev', url: 'https://github.com/swetha2310/DevopsCloud.git' 
+               }
+               }
+          }
+        }
+       stage('Maven Build') {
+           steps {
+               sh "mvn clean install"
+            }
+        }
+       stage('Upload Build Artifacts'){
+           steps{
+                script{
+                    if (env.GIT_BRANCH.contains('master')) {
+                        nexusArtifactUploader artifacts: [[artifactId: 'maven-project', classifier: '', file: '/var/lib/jenkins/workspace/Ansible-Demo/webapp/target/webapp.war', type: 'war']], credentialsId: 'Nexus', groupId: 'com.example.maven-project', nexusUrl: '65.2.186.137:8081/', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-releases', version: '1.0.0-RELEASE'
+                     }
+                     else
+                     {
+                        echo "Run this stage only if the branch is not master"
+                        nexusArtifactUploader artifacts: [[artifactId: 'maven-project', classifier: '', file: '/var/lib/jenkins/workspace/Ansible-Demo/webapp/target/webapp.war', type: 'war']], credentialsId: 'Nexus', groupId: 'com.example.maven-project', nexusUrl: '65.2.186.137:8081/', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-snapshots', version: '1.0.0-SNAPSHOT'
+                    }
+               }
+            }
+        }
+        stage(Merge and pull request){
+            steps{
+                script{
+        // Merge the release branch changes
+                sh '''
+                    git config user.name "swetha2310"
+                    git config user.email "PandeeswariSubbaiya1814@gmail.com"
+                    git checkout master
+                    git merge --no-ff dev
+                '''
+
+                // Create a new pull request
+                 sh '''
+                    curl --location --request POST 'https://api.github.com' \
+                    --header 'Authorization: Bearer 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' \
+                    --header 'Content-Type: application/json' \
+                    --data-raw '{
+                        "title": "Pull request",
+                        "head": "dev",
+                        "base": "master"
+                     }'
+                '''
+                }
+            }
+        }
+    }
+}
