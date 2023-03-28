@@ -41,13 +41,13 @@ pipeline {
                }
             }
         }
-        stage(Merge and pull request){
+        stage(Create pull request and Merge){
             steps{
                 script{
         // Merge the release branch changes
                 sh '''
                     git config user.name "swetha2310"
-                    git config user.email "PandeeswariSubbaiya1814@gmail.com"
+                    git config user.email "sweswetha231096@gmail.com"
                     git checkout master
                     git merge --no-ff dev
                 '''
