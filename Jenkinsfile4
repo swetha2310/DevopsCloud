@@ -41,7 +41,7 @@ pipeline {
                }
             }
         }
-        stage(Create pull request and Merge){
+        stage('Create pull request and Merge'){
             steps{
                 script{
         // Merge the release branch changes
