@@ -41,7 +41,9 @@ pipeline {
                }
             }
         }
-        job('upstreamJob') {
+        stage('pullRequest'){
+            steps{
+                job('upstreamJob') {
     scm {
         git {
          remote {
@@ -87,10 +89,13 @@ pipeline {
             failOnNonMerge()
             deleteOnMerge()
         }
-     }
+     }  }
+            }
 }
 
-job('downstreamJob') {
+        stage('Merge'){
+            steps{
+                job('downstreamJob') {
     wrappers {
         downstreamCommitStatus {
             context('CONTEXT NAME')
@@ -101,7 +106,8 @@ job('downstreamJob') {
             completedStatus('FAILURE', "The job has failed")
             completedStatus('ERROR', "The job has resulted in an error")
          }
+    }
      }
-}
+}   }
     }
 }
