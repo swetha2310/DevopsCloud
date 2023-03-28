@@ -1,1 +1,1 @@
-Have a good day
+Have a great day
