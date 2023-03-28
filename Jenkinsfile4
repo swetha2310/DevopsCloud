@@ -43,7 +43,6 @@ pipeline {
         }
         stage('Create pull request and Merge'){
             steps{
-                script{
         // Merge the release branch changes
                 sh '''
                     git config user.name "swetha2310"
@@ -53,7 +52,7 @@ pipeline {
                 '''
 
                 // Create a new pull request
-                 sh '''
+                sh '''
                     curl --location --request POST 'https://api.github.com' \
                     --header 'Authorization: Bearer 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' \
                     --header 'Content-Type: application/json' \
@@ -63,7 +62,6 @@ pipeline {
                         "base": "master"
                      }'
                 '''
-                }
             }
         }
     }
