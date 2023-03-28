@@ -43,7 +43,6 @@ pipeline {
         }
         stage(Merge and pull request){
             steps{
-                script{
         // Merge the release branch changes
                 sh '''
                     git config user.name "swetha2310"
@@ -63,7 +62,6 @@ pipeline {
                         "base": "master"
                      }'
                 '''
-                }
             }
         }
     }
