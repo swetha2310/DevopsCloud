@@ -41,7 +41,7 @@ pipeline {
                }
             }
         }
-        stage(Merge and pull request){
+        stage('Merge and pull request'){
             steps{
         // Merge the release branch changes
                 sh '''
@@ -52,7 +52,7 @@ pipeline {
                 '''
 
                 // Create a new pull request
-                 sh '''
+                sh '''
                     curl --location --request POST 'https://api.github.com' \
                     --header 'Authorization: Bearer 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' \
                     --header 'Content-Type: application/json' \
