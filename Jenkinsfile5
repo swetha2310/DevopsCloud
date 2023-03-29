@@ -41,17 +41,18 @@ pipeline {
                }
             }
         }
-        job('upstreamJob') {
-    scm {
-        git {
-         remote {
-            github('swetha2310/DevopsCloud')
-                refspec('+refs/pull/*:refs/remotes/origin/pr/*')
-            }
-            branch('${sha1}')
-        }
-     }
-
+        stage('pullRequest'){
+            steps{
+                job('upstreamJob') {
+                    scm {
+                        git {
+                            remote {
+                                github('swetha2310/DevopsCloud')
+                                refspec('+refs/pull/*:refs/remotes/origin/pr/*')
+                            }
+                            branch('${sha1}')
+                        }
+                    }
     triggers {
         pullRequest {
             admin('swetha2310')
@@ -77,31 +78,10 @@ pipeline {
                     completedStatus('ERROR', 'Something went really wrong. Investigate!')
                  }
             }
-         }
-     }
-    publishers {
-        mergeGithubPullRequest {
-            mergeComment('merged by Jenkins')
-            onlyAdminsMerge()
-            disallowOwnCode()
-            failOnNonMerge()
-            deleteOnMerge()
         }
-     }
-}
-
-job('downstreamJob') {
-    wrappers {
-        downstreamCommitStatus {
-            context('CONTEXT NAME')
-            triggeredStatus("The job has triggered")
-            startedStatus("The job has started")
-            statusUrl()
-            completedStatus('SUCCESS', "The job has passed")
-            completedStatus('FAILURE', "The job has failed")
-            completedStatus('ERROR', "The job has resulted in an error")
-         }
-     }
-}
+     }  }    }  }
     }
 }
+    
+        
+            
