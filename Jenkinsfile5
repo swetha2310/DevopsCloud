@@ -20,5 +20,7 @@ pipeline {
                 git branch: 'dev', url: 'https://github.com/swetha2310/DevopsCloud.git' 
                }
                }
-          }
-        }
+           }
+      }
+    }
+}
