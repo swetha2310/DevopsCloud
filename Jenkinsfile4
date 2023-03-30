@@ -54,7 +54,7 @@ pipeline {
                 // Create a new pull request
                 sh '''
                     curl --location --request POST 'https://api.github.com' \
-                    --header 'Authorization: Bearer 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' \
+                    --header 'Authorization: Bearer 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' \
                     --header 'Content-Type: application/json' \
                     --data-raw '{
                         "title": "Pull request",
