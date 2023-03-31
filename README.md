@@ -1,1 +1,2 @@
-Have a year ahead.
+Have a great year ahead
+Good day
