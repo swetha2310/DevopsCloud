@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('git') {
             steps {
-                git branch: 'swetha2310-patch-4', url: 'https://github.com/swetha2310/DevopsCloud.git'
+                git branch: 'dev', url: 'https://github.com/swetha2310/DevopsCloud.git'
             }
         }
         stage('SonarQube analysis') {
