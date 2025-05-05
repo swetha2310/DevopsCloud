@@ -9,45 +9,23 @@ pipeline {
                 git branch: 'dev', credentialsId: 'git', url: 'https://github.com/swetha2310/DevopsCloud.git'
             }
         }
+	stage('Build'){
+            steps{
+                sh 'mvn clean package'
+            }
+         }
         stage('SonarQube analysis') {
 //    def scannerHome = tool 'SonarScanner 4.0';
             steps{
-                withSonarQubeEnv('sonarqube-8.9.10') { 
+                withSonarQubeEnv('sonarqube8.9.10') { 
                 // If you have configured more than one global server connection, you can specify its name
 //              sh "${scannerHome}/bin/sonar-scanner"
                 sh "mvn sonar:sonar"
                 sh "cat target/sonar/report-task.txt"
                 }
             }
-       }
-        stage('Build'){
-            steps{
-                sh 'mvn clean package'
-            }
-         }
-        stage('Docker Build'){
-            steps{
-                sh "docker build . -t swethaks/helloworldmaven_0.1:$BUILD_NUMBER"
-            }
-        }
-        stage('Push to dockerHub'){
-            steps{
-                withCredentials([string(credentialsId: 'docker', variable: 'dockerpassword')]) {
-                sh "docker login -u swethaks -p ${dockerpassword}"
-                }
-                sh "docker push swethaks/helloworldmaven_0.1:$BUILD_NUMBER"
-            }
-        }
-        stage('Deploy to EKS'){
-            steps{
-                withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'kubernetes', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
-                sh 'chmod +x changeTag.sh'
-		            sh './changeTag.sh $BUILD_NUMBER'
-                //sh "kubectl apply -f eksdep-K8s.yaml"//
-                //sh " kubectl delete deployment my-app "//
-                sh " kubectl apply -f rollingupdate.yml "
-                }
-            }
-        }
-    }
+      	 }
+     }
 }
+        
+        
