@@ -1,0 +1,31 @@
+pipeline { 
+    agent any
+    environment{
+        PATH = "$PATH:/usr/share/maven/apache-maven-3.0.5"
+    }
+    stages {
+        stage('git') {
+            steps {
+                git branch: 'dev', credentialsId: 'git', url: 'https://github.com/swetha2310/DevopsCloud.git'
+            }
+        }
+	stage('Build'){
+            steps{
+                sh 'mvn clean package'
+            }
+         }
+        stage('SonarQube analysis') {
+//    def scannerHome = tool 'SonarScanner 4.0';
+            steps{
+                withSonarQubeEnv('sonarqube8.9.10') { 
+                // If you have configured more than one global server connection, you can specify its name
+//              sh "${scannerHome}/bin/sonar-scanner"
+                sh "mvn sonar:sonar"
+                sh "cat target/sonar/report-task.txt"
+                }
+            }
+      	 }
+     }
+}
+        
+        
